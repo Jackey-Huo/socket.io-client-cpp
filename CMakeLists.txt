@@ -71,14 +71,25 @@ list(APPEND TARGET_LIBRARIES sioclient_tls)
 
 endif()
 
-install(FILES ${ALL_HEADERS} 
-    DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/include"
+
+install(FILES ${ALL_HEADERS}
+  DESTINATION include/sio/
 )
 
-install(TARGETS ${TARGET_LIBRARIES}
-    DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/lib/${CMAKE_BUILD_TYPE}"
+install(TARGETS sioclient
+  EXPORT sioclient_cpp
+  DESTINATION lib/
 )
 
-install(FILES ${Boost_LIBRARIES} 
-    DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/lib/${CMAKE_BUILD_TYPE}"
-)
+if(OPENSSL_FOUND)
+  install(TARGETS sioclient_tls
+    EXPORT sioclient_cpp
+    DESTINATION lib/
+  )
+endif()
+
+#install(FILES ${Boost_LIBRARIES} 
+    #DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/lib/${CMAKE_BUILD_TYPE}"
+#)
+install(EXPORT sioclient_cpp
+        DESTINATION lib/cmake)
